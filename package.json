@@ -4,8 +4,8 @@
   "description": "Modern, responsive web app for studying the 2025 USCIS Naturalization Civics Test (128 questions)",
   "main": "index.html",
   "scripts": {
-    "build": "echo Build complete - dist/ files are ready for deployment",
-    "serve": "npx http-server ./dist -p 8080 -c-1"
+    "build": "tsc",
+    "serve": "npx http-server ./docs -p 8080 -c-1"
   },
   "keywords": [
     "USCIS",
@@ -15,7 +15,7 @@
     "test",
     "study"
   ],
-  "author": "",
+  "author": "Julian Mercado",
   "license": "MIT",
   "devDependencies": {
     "tailwindcss": "^4.0.0",
