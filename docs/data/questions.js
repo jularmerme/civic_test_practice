@@ -2157,8 +2157,8 @@ window.civicsQuestions = [
         lastVerified: '2026-07-30',
     },
 ];
-export function getQuestionById(id) {
-    return civicsQuestions.find((q) => q.id === id);
+window.getQuestionById = function(id) {
+    return window.civicsQuestions.find((q) => q.id === id);
 }
 export function getQuestionsByCategory(category) {
     return civicsQuestions.filter((q) => q.category === category);
