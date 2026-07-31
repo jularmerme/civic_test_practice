@@ -1,4 +1,4 @@
-export const civicsQuestions = [
+window.civicsQuestions = [
     {
         id: 1,
         category: 'American Government',
