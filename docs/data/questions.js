@@ -2160,16 +2160,16 @@ window.civicsQuestions = [
 window.getQuestionById = function(id) {
     return window.civicsQuestions.find((q) => q.id === id);
 }
-export function getQuestionsByCategory(category) {
-    return civicsQuestions.filter((q) => q.category === category);
+window.getQuestionsByCategory = function(category) {
+    return window.civicsQuestions.filter((q) => q.category === category);
 }
-export function get65_20Questions() {
-    return civicsQuestions.filter((q) => q.is65_20);
+window.get65_20Questions = function() {
+    return window.civicsQuestions.filter((q) => q.is65_20);
 }
-export function getDynamicQuestions() {
-    return civicsQuestions.filter((q) => q.answerType !== 'fixed');
+window.getDynamicQuestions = function() {
+    return window.civicsQuestions.filter((q) => q.answerType !== 'fixed');
 }
-export function shuffleArray(array) {
+window.shuffleArray = function(array) {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
@@ -2177,7 +2177,7 @@ export function shuffleArray(array) {
     }
     return shuffled;
 }
-export function getRandomQuestions(count, questions = civicsQuestions) {
-    return shuffleArray(questions).slice(0, Math.min(count, questions.length));
+window.getRandomQuestions = function(count, questions = window.civicsQuestions) {
+    return window.shuffleArray(questions).slice(0, Math.min(count, questions.length));
 }
 //# sourceMappingURL=questions.js.map

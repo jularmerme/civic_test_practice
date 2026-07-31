@@ -1,3 +1,2 @@
-// Core data types for the civics test application
-export {};
+// Type definitions (empty export)
 //# sourceMappingURL=index.js.map

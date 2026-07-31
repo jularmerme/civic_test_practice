@@ -1,10 +1,8 @@
-import { civicsQuestions, shuffleArray } from '../data/questions';
-import { resolveDynamicAnswer } from '../data/officials';
-import { storage } from './storage';
+// Using global functions from questions.js and officials.js
 /**
  * Quiz session management and scoring logic
  */
-export class QuizSession {
+class QuizSession {
     constructor(questions) {
         this.currentIndex = 0;
         this.answers = new Map();
@@ -113,7 +111,7 @@ export class QuizSession {
 /**
  * Mock exam simulation following official USCIS rules
  */
-export class MockExam {
+class MockExam {
     constructor(use65_20 = false, questions) {
         this.asked = 0;
         this.correctAnswers = 0;
@@ -238,7 +236,7 @@ export class MockExam {
 /**
  * Helper to generate multiple choice options with type-matching distractors
  */
-export function generateMultipleChoiceOptions(question, allQuestions) {
+function generateMultipleChoiceOptions(question, allQuestions) {
     // For dynamic questions, resolve the correct answer first
     const correctAnswer = question.answerType !== 'fixed' && question.dynamicKey
         ? resolveDynamicAnswer(question.dynamicKey) || question.displayAnswer
