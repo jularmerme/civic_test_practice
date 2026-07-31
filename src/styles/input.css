@@ -1,0 +1,47 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors duration-300;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply px-6 py-3 bg-civic-blue-600 text-white rounded-lg font-medium hover:bg-civic-blue-700 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply px-6 py-3 bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 rounded-lg font-medium hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors duration-200;
+  }
+
+  .btn-success {
+    @apply px-6 py-3 bg-civic-green-600 text-white rounded-lg font-medium hover:bg-civic-green-700 transition-colors duration-200;
+  }
+
+  .btn-outline {
+    @apply px-6 py-3 border-2 border-civic-blue-600 text-civic-blue-600 dark:text-civic-blue-400 rounded-lg font-medium hover:bg-civic-blue-50 dark:hover:bg-slate-800 transition-colors duration-200;
+  }
+
+  .card {
+    @apply bg-white dark:bg-slate-800 rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 p-6;
+  }
+
+  .input-field {
+    @apply w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-civic-blue-500 transition-colors duration-200;
+  }
+
+  .progress-bar {
+    @apply w-full h-2 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden;
+  }
+
+  .progress-fill {
+    @apply h-full bg-gradient-to-r from-civic-blue-500 to-civic-green-500 rounded-full transition-all duration-300;
+  }
+}

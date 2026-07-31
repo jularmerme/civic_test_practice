@@ -1,0 +1,111 @@
+================================================================================
+QUICK DEPLOYMENT CHECKLIST — Copy & Paste Steps
+================================================================================
+
+STEP 1: BUILD YOUR CODE
+------------------------
+cd d:\Repositories\civic_test_practice
+npm run build
+
+✓ Check: No errors in output
+✓ Check: dist/ folder exists with index.html, app.js, styles.css
+
+STEP 2: PREPARE GIT (Stage & Commit)
+------------------------------------
+git add .
+git commit -m "feat: refactor RATIFY — bug fixes and improvements"
+
+✓ Check: No errors
+
+STEP 3: ADD GITHUB REMOTE (First Time Only)
+--------------------------------------------
+git remote add origin https://github.com/YOUR_USERNAME/civic_test_practice.git
+
+(Replace YOUR_USERNAME with your actual GitHub username)
+
+✓ Check: git remote -v shows origin
+
+STEP 4: PUSH TO GITHUB
+----------------------
+git push -u origin main
+
+(Or "master" if that's your branch name)
+
+✓ Check: Refresh https://github.com/YOUR_USERNAME/civic_test_practice
+✓ Check: Code is visible on GitHub
+
+STEP 5: ENABLE GITHUB PAGES
+----------------------------
+1. Go to: https://github.com/YOUR_USERNAME/civic_test_practice/settings/pages
+2. Under "Build and deployment":
+   - Source: "Deploy from a branch"
+   - Branch: "main" (or master)
+   - Folder: "/dist"
+3. Click "Save"
+4. Wait 1-2 minutes
+
+✓ Check: You see "Your site is live at https://YOUR_USERNAME.github.io/civic_test_practice"
+
+STEP 6: TEST YOUR LIVE SITE
+---------------------------
+1. Open: https://YOUR_USERNAME.github.io/civic_test_practice
+2. F12 → Console → Check for errors
+3. Test: Click buttons, answer questions, take mock exam
+4. Mobile test: Zoom to 50% or resize window
+
+✓ All working? DONE! 🎉
+
+================================================================================
+FUTURE UPDATES (Whenever You Make Changes)
+================================================================================
+
+npm run build
+git add .
+git commit -m "fix: [what you fixed]"
+git push origin main
+
+Wait 2 minutes → Refresh live URL
+
+================================================================================
+YOUR URLS
+================================================================================
+
+Local: d:\Repositories\civic_test_practice
+GitHub: https://github.com/YOUR_USERNAME/civic_test_practice
+Live: https://YOUR_USERNAME.github.io/civic_test_practice
+
+================================================================================
+COMMON ERRORS & FIXES
+================================================================================
+
+ERROR: "fatal: 'origin' does not appear to be a remote repository"
+FIX: Run STEP 3 (git remote add origin...)
+
+ERROR: "404 Not Found" on live URL
+FIX: Check GitHub Pages enabled in Settings → Pages
+FIX: Wait 2-3 minutes for deployment
+FIX: Hard refresh: Ctrl+Shift+R
+
+ERROR: "npm run build fails"
+FIX: npm install
+FIX: npm run build
+
+ERROR: Live site shows old version
+FIX: Ctrl+Shift+R (hard refresh/clear cache)
+
+================================================================================
+NEED YOUR USERNAME?
+================================================================================
+
+If you don't know your GitHub username:
+1. Go to https://github.com/settings/profile
+2. Look for "Username" field
+3. Replace YOUR_USERNAME in all URLs with this value
+
+Example:
+- GitHub: https://github.com/john_doe/civic_test_practice
+- Live: https://john_doe.github.io/civic_test_practice
+
+================================================================================
+Ready? Follow STEP 1 → STEP 6 above. Good luck! 🚀
+================================================================================

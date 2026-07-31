@@ -1,0 +1,14 @@
+node_modules/
+dist/
+*.js
+*.js.map
+*.d.ts
+*.tsbuildinfo
+.env
+.env.local
+.DS_Store
+*.swp
+*.swo
+*~
+.vscode/settings.json
+.idea/
