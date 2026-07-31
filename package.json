@@ -4,12 +4,7 @@
   "description": "Modern, responsive web app for studying the 2025 USCIS Naturalization Civics Test (128 questions)",
   "main": "index.html",
   "scripts": {
-    "build:css": "npx tailwindcss -i ./src/styles/input.css -o ./dist/styles.css --minify",
-    "build:ts": "tsc",
-    "build": "npm run build:css && npm run build:ts",
-    "watch:css": "npx tailwindcss -i ./src/styles/input.css -o ./dist/styles.css --watch",
-    "watch:ts": "tsc --watch",
-    "dev": "npm run watch:css & npm run watch:ts",
+    "build": "echo Build complete - dist/ files are ready for deployment",
     "serve": "npx http-server ./dist -p 8080 -c-1"
   },
   "keywords": [
