@@ -75,7 +75,7 @@ const CURRENT_OFFICIALS = {
  * @param userState The user's state (required for state-specific answers)
  * @returns The resolved answer string, or undefined if not found
  */
-export function resolveDynamicAnswer(dynamicKey, userState) {
+function resolveDynamicAnswer(dynamicKey, userState) {
     if (!dynamicKey)
         return undefined;
     switch (dynamicKey) {
@@ -105,8 +105,8 @@ export function resolveDynamicAnswer(dynamicKey, userState) {
 /**
  * Update the current President (for testing or after an election)
  */
-export function updateOfficials(updates) {
+function updateOfficials(updates) {
     Object.assign(CURRENT_OFFICIALS, updates);
 }
-export default { resolveDynamicAnswer, updateOfficials };
+
 //# sourceMappingURL=officials.js.map

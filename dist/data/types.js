@@ -1,2 +1,2 @@
-export {};
+// Type definitions
 //# sourceMappingURL=types.js.map

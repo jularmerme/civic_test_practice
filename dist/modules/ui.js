@@ -1,7 +1,7 @@
 /**
  * UI rendering and event handling
  */
-export class UI {
+class UI {
     constructor(containerId) {
         this.currentPage = 'home';
         const container = document.getElementById(containerId);

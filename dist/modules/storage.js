@@ -143,5 +143,5 @@ class StorageManager {
         return this.isAvailable();
     }
 }
-export const storage = new StorageManager();
+window.storage = new StorageManager();
 //# sourceMappingURL=storage.js.map
