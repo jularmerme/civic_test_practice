@@ -195,80 +195,77 @@ class App {
   }
 
   async startStudy() {
-    // Use all 128 questions
-    const realQuestions = civicsQuestions;
-    
-    // Create a set to hold unique random question indices
-    const uniqueQuestionSet = new Set();
-    const selectedQuestions = [];
-    
-    // Keep adding random questions until we have 10 unique ones
-    while (selectedQuestions.length < 10) {
-      const randomIdx = Math.floor(Math.random() * realQuestions.length);
-      if (!uniqueQuestionSet.has(randomIdx)) {
-        uniqueQuestionSet.add(randomIdx);
-        selectedQuestions.push(realQuestions[randomIdx]);
-      }
+    // Load questions from new exams schema
+    const exam = await examsLoader.getExam('220-1201');
+    if (!exam) {
+      this.notify('Failed to load exam questions');
+      return;
     }
     
-    // Resolve dynamic questions
-    const resolvedQuestions = await Promise.all(
-      selectedQuestions.map(q => resolveQuestion(q, this.prefs.state || 'CA'))
-    );
+    const questionBank = exam.questionBank;
+    const selectedQuestions = examsLoader.getRandomQuestions(10, questionBank);
     
-    this.session = { type: 'study', questions: resolvedQuestions, current: 0, answers: {} };
+    // Shuffle options within each question
+    const questionsWithShuffledOptions = selectedQuestions.map(q => examsLoader.shuffleQuestion(q));
+    
+    this.session = { 
+      type: 'study', 
+      questions: questionsWithShuffledOptions, 
+      current: 0, 
+      answers: {} 
+    };
     this.showQuestion();
   }
 
   async startPractice() {
-    // Use all 128 questions for practice session
-    const realQuestions = civicsQuestions;
-    
-    // Create a set to hold unique random question indices
-    const uniqueQuestionSet = new Set();
-    const selectedQuestions = [];
-    
-    // Keep adding random questions until we have 20 unique ones
-    while (selectedQuestions.length < 20) {
-      const randomIdx = Math.floor(Math.random() * realQuestions.length);
-      if (!uniqueQuestionSet.has(randomIdx)) {
-        uniqueQuestionSet.add(randomIdx);
-        selectedQuestions.push(realQuestions[randomIdx]);
-      }
+    // Load questions from new exams schema
+    const exam = await examsLoader.getExam('220-1201');
+    if (!exam) {
+      this.notify('Failed to load exam questions');
+      return;
     }
     
-    // Resolve dynamic questions
-    const resolvedQuestions = await Promise.all(
-      selectedQuestions.map(q => resolveQuestion(q, this.prefs.state || 'CA'))
-    );
+    const questionBank = exam.questionBank;
+    const selectedQuestions = examsLoader.getRandomQuestions(20, questionBank);
     
-    this.session = { type: 'practice', questions: resolvedQuestions, current: 0, correct: 0, incorrect: 0, answers: {}, score: null };
+    // Shuffle options within each question
+    const questionsWithShuffledOptions = selectedQuestions.map(q => examsLoader.shuffleQuestion(q));
+    
+    this.session = { 
+      type: 'practice', 
+      questions: questionsWithShuffledOptions, 
+      current: 0, 
+      correct: 0, 
+      incorrect: 0, 
+      answers: {}, 
+      score: null 
+    };
     this.showQuestion();
   }
 
   async startMock() {
-    // Use all 128 questions for mock exam
-    const realQuestions = civicsQuestions;
-    
-    // Create a set to hold unique random question indices
-    const uniqueQuestionSet = new Set();
-    const selectedQuestions = [];
-    
-    // Keep adding random questions until we have 20 unique ones
-    while (selectedQuestions.length < 20) {
-      const randomIdx = Math.floor(Math.random() * realQuestions.length);
-      if (!uniqueQuestionSet.has(randomIdx)) {
-        uniqueQuestionSet.add(randomIdx);
-        selectedQuestions.push(realQuestions[randomIdx]);
-      }
+    // Load questions from new exams schema
+    const exam = await examsLoader.getExam('220-1201');
+    if (!exam) {
+      this.notify('Failed to load exam questions');
+      return;
     }
     
-    // Resolve dynamic questions
-    const resolvedQuestions = await Promise.all(
-      selectedQuestions.map(q => resolveQuestion(q, this.prefs.state || 'CA'))
-    );
+    const questionBank = exam.questionBank;
+    const selectedQuestions = examsLoader.getRandomQuestions(20, questionBank);
     
-    this.session = { type: 'mock', questions: resolvedQuestions, current: 0, correct: 0, incorrect: 0, answers: {}, score: null };
+    // Shuffle options within each question
+    const questionsWithShuffledOptions = selectedQuestions.map(q => examsLoader.shuffleQuestion(q));
+    
+    this.session = { 
+      type: 'mock', 
+      questions: questionsWithShuffledOptions, 
+      current: 0, 
+      correct: 0, 
+      incorrect: 0, 
+      answers: {}, 
+      score: null 
+    };
     this.showQuestion();
   }
 
@@ -730,95 +727,11 @@ class App {
     }).length;
     const incorrectCount = Object.keys(s.answers).length - correctCount;  // Only count answered questions
 
-    // Helper: Detect answer type
-    const getAnswerType = (answer) => {
-      if (!answer || typeof answer !== 'string') return 'other';
-      
-      const trimmed = answer.trim();
-      
-      // Check if it's a year (4 digits)
-      if (/^\d{4}$/.test(trimmed)) return 'year';
-      
-      // Check if it's a pure integer
-      if (/^\d+$/.test(trimmed)) return 'integer';
-      
-      // Check if it's a pure number (includes decimals)
-      if (/^\d+\.?\d*$/.test(trimmed)) return 'number';
-      
-      // Check if it looks like a name (capitalized words)
-      if (/^[A-Z][a-z]+(\s[A-Z][a-z]+)*$/.test(trimmed)) return 'name';
-      
-      // Default to descriptive text
-      return 'text';
-    };
-
-    // Helper: Validate if answer matches type
-    const answerMatchesType = (answer, targetType) => {
-      const answerType = getAnswerType(answer);
-      return answerType === targetType;
-    };
-
     // Generate answer options with letters
     const answerLetters = ['A', 'B', 'C', 'D'];
-    let allAnswers = [];
     
-    // Add the correct answer - use displayAnswer or first acceptable answer
-    const correctAnswer = q.displayAnswer || q.acceptableAnswers[0];
-    allAnswers.push(correctAnswer);
-    const correctAnswerType = getAnswerType(correctAnswer);
-    
-    // Add distractors from other questions - ONLY if they match the answer type
-    for (const otherQ of s.questions) {
-      if (otherQ.id !== q.id && allAnswers.length < 4) {
-        // Use displayAnswer or acceptable answers
-        const otherAnswers = [otherQ.displayAnswer, ...otherQ.acceptableAnswers].filter(Boolean);
-        for (const ans of otherAnswers) {
-          if (!allAnswers.includes(ans) && allAnswers.length < 4 && answerMatchesType(ans, correctAnswerType)) {
-            allAnswers.push(ans);
-          }
-        }
-      }
-    }
-    
-    // If we don't have 4 answers (not enough matching type), use generic distractors based on type
-    while (allAnswers.length < 4) {
-      let distractor = '';
-      switch(correctAnswerType) {
-        case 'year':
-          // Generate a year close to but different from the correct year
-          const baseYear = parseInt(correctAnswer);
-          const offset = (Math.random() > 0.5 ? 1 : -1) * (Math.floor(Math.random() * 50) + 1);
-          distractor = String(baseYear + offset);
-          break;
-        case 'integer':
-          // Generate random integers
-          distractor = String(Math.floor(Math.random() * 1000));
-          break;
-        case 'number':
-          distractor = String(Math.random().toFixed(2));
-          break;
-        case 'name':
-          // Generic names if needed
-          const genericNames = ['John Smith', 'Jane Doe', 'Thomas Brown', 'Mary Johnson', 'Robert Lee'];
-          distractor = genericNames[Math.floor(Math.random() * genericNames.length)];
-          break;
-        case 'text':
-        default:
-          // Generic text responses
-          const genericResponses = ['Not specified', 'Unknown', 'Various', 'Depends', 'Multiple options'];
-          distractor = genericResponses[Math.floor(Math.random() * genericResponses.length)];
-      }
-      if (!allAnswers.includes(distractor)) {
-        allAnswers.push(distractor);
-      }
-    }
-    
-    // Shuffle them and store in session for consistency (so they don't reshuffle on re-render)
-    if (!s.questionOptions) s.questionOptions = {};
-    if (!s.questionOptions[q.id]) {
-      s.questionOptions[q.id] = allAnswers.sort(() => 0.5 - Math.random());
-    }
-    const shuffledAnswers = s.questionOptions[q.id];
+    // Use pre-built options from the new schema
+    const shuffledAnswers = q.options || [];
 
     document.getElementById('app').innerHTML = `
       <style>
@@ -1075,7 +988,7 @@ class App {
 
           <div class="answers-container">
             ${shuffledAnswers.map((ans, idx) => {
-              const isCorrect = q.acceptableAnswers && q.acceptableAnswers.includes(ans);
+              const isCorrect = examsLoader.isAnswerCorrect(q, ans);
               const isSelected = answered === ans;
               return `
               <button
@@ -1095,10 +1008,10 @@ class App {
           </div>
 
           ${answered ? `
-            <div class="explanation" style="${!q.acceptableAnswers || !q.acceptableAnswers.includes(answered) ? 'border-left-color: #B85C4A;' : ''}">
-              <h4>${q.acceptableAnswers && q.acceptableAnswers.includes(answered) ? 'Great job!' : 'Not quite right'}</h4>
+            <div class="explanation" style="${!examsLoader.isAnswerCorrect(q, answered) ? 'border-left-color: #B85C4A;' : ''}">
+              <h4>${examsLoader.isAnswerCorrect(q, answered) ? 'Great job!' : 'Not quite right'}</h4>
               <p>${this.escapeHtml(q.explanation)}</p>
-              ${q.acceptableAnswers && !q.acceptableAnswers.includes(answered) ? `<p style="margin-top: 16px; color: #B85C4A;"><strong>Correct answer:</strong> ${this.escapeHtml(q.displayAnswer || q.acceptableAnswers[0])}</p>` : ''}
+              ${!examsLoader.isAnswerCorrect(q, answered) ? `<p style="margin-top: 16px; color: #B85C4A;"><strong>Correct answer:</strong> ${this.escapeHtml(q.correctAnswer[0])}</p>` : ''}
             </div>
           ` : ''}
 
@@ -1115,9 +1028,11 @@ class App {
     const q = this.session.questions[this.session.current];
     this.session.answers[q.id] = ans;
     
+    // Check if answer is correct using the new schema
+    const isCorrect = examsLoader.isAnswerCorrect(q, ans);
+    
     // Track correct/incorrect for mock exams
     if (this.session.type === 'mock') {
-      const isCorrect = q.acceptableAnswers && q.acceptableAnswers.includes(ans);
       if (isCorrect) {
         this.session.correct = (this.session.correct || 0) + 1;
       } else {
@@ -1158,7 +1073,7 @@ class App {
       // Calculate score before showing results
       this.session.correct = Object.keys(this.session.answers).filter(id => {
         const q = this.session.questions.find(q => q.id == id);
-        return q && q.acceptableAnswers && q.acceptableAnswers.includes(this.session.answers[id]);
+        return q && examsLoader.isAnswerCorrect(q, this.session.answers[id]);
       }).length;
       this.session.incorrect = this.session.questions.length - this.session.correct;
       this.showResults();
