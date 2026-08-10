@@ -582,13 +582,13 @@
                                                             "question":  "When was the Constitution written?",
                                                             "explanation":  "The U.S. Constitution was written during the Constitutional Convention in Philadelphia in 1787. It went into effect in 1789.",
                                                             "options":  [
-                                                                            "1865",
-                                                                            "1788",
-                                                                            "1787",
-                                                                            "1776"
+                                                                            "(U.S.) Constitution",
+                                                                            "Declaration",
+                                                                            "Bill of Rights",
+                                                                            "Articles"
                                                                         ],
                                                             "correctAnswer":  [
-                                                                                  "1787"
+                                                                                  "(U.S.) Constitution"
                                                                               ]
                                                         },
                                                         {
